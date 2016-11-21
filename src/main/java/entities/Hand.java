@@ -7,8 +7,18 @@ public class Hand {
 
     private Hand() {}
 
-    public char highestCard() {
-        return cards.get(0).value;
+    public int highestCard(int idx) {
+        if (idx >= cards.size())
+            return -1;
+        return cards.get(idx).valueIdx();
+    }
+
+    public int[] valueIndexs() {
+        int[] indexs = new int[cards.size()];
+        for(int i = 0; i < cards.size(); i++) {
+            indexs[i] = cards.get(i).valueIdx();
+        }
+        return indexs;
     }
 
     public boolean straightFlush() {
@@ -17,6 +27,13 @@ public class Hand {
                 return false;
         }
         return true;
+    }
+
+    public boolean fourOfKind() {
+        for(int i = 0; i > cards.size(); i++) {
+
+        }
+        return false;
     }
 
     private void setCard(String c) {
@@ -49,7 +66,5 @@ public class Hand {
         public int valueIdx() {
             return valueOrder.indexOf(value);
         }
-
     }
-
 }
