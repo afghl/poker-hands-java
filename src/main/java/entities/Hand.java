@@ -3,68 +3,163 @@ package entities;
 import java.util.*;
 
 public class Hand {
-    private List<HandCard> cards = new ArrayList<HandCard>();
+    private final static String VALUE_ORDER = "23456789TJQKA";
+
+    private final static int CARDS_NUMBER = 5;
+
+    private int[] values = new int[CARDS_NUMBER];
+
+    private Set<Character> types = new HashSet<Character>();
+
+    private List<Card> cards = new ArrayList<Card>();
+
+    private int count = 0;
+
+    private int highest = -1;
 
     private Hand() {}
-
-    public int highestCard(int idx) {
-        if (idx >= cards.size())
-            return -1;
-        return cards.get(idx).valueIdx();
-    }
-
-    public int[] valueIndexs() {
-        int[] indexs = new int[cards.size()];
-        for(int i = 0; i < cards.size(); i++) {
-            indexs[i] = cards.get(i).valueIdx();
-        }
-        return indexs;
-    }
-
-    public boolean straightFlush() {
-        for(int i = 1; i < cards.size(); i++) {
-            if (cards.get(i - 1).valueIdx() - cards.get(i).valueIdx() != 1)
-                return false;
-        }
-        return true;
-    }
-
-    public boolean fourOfKind() {
-        for(int i = 0; i > cards.size(); i++) {
-
-        }
-        return false;
-    }
-
-    private void setCard(String c) {
-        HandCard card = new HandCard();
-        card.value = c.charAt(0);
-        card.type = c.charAt(1);
-        cards.add(card);
-    }
 
     public static Hand createHand(String args) {
         Hand h = new Hand();
         String[] cards = args.split(" ");
         for (String c : cards)
-            h.setCard(c);
-        Collections.sort(h.cards, new Comparator<HandCard>() {
-            public int compare(HandCard c1, HandCard c2) {
-                return c2.valueIdx() - c1.valueIdx();
-            }
-        });
+            h.addCard(c);
+
+        Arrays.sort(h.values);
         return h;
     }
 
-    private class HandCard {
-        public char type;
-        public char value;
-
-        private final String typeOrder = "CDHS";
-        private final String valueOrder = "23456789TJQKA";
-
-        public int valueIdx() {
-            return valueOrder.indexOf(value);
+    public String pattern() {
+        if (types.size() == 1 && consecutiveValues()) {
+            return "Straight Flush";
+        } else if (fourOfKind()) {
+            return "Four of a Kind";
+        } else if (fullHouse()) {
+            return "Full House";
+        } else if (types.size() == 1 && !consecutiveValues()) {
+            return "Straight";
+        } else if (threeOfKind()) {
+            return "Three of a Kind";
+        } else if (twoPairs()) {
+            return "Two Pairs";
+        } else if (pair()) {
+            return "Pair";
+        } else {
+            return "No Pattern";
         }
+    }
+
+    private boolean fullHouse() {
+        int count;
+        boolean canBeFullHouse = false;
+
+        for (int i = 0; i < values.length; i++) {
+            count = 0;
+            for (int j = 0; j < values.length; j ++) {
+                if (values[i] == values[j]) count++;
+            }
+
+            // TODO: this is a bug here.
+            if (count == 3 && !canBeFullHouse) {
+                highest = values[i];
+                canBeFullHouse = true;
+            } else if (count == 2 && canBeFullHouse) {
+                return true;
+            } else if (count == 2 && !canBeFullHouse) {
+                canBeFullHouse = true;
+            } else if (count == 3 && canBeFullHouse) {
+                highest = values[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean pair() {
+        int count;
+
+        for (int i = 0; i < values.length; i++) {
+            count = 0;
+            for (int j = 0; j < values.length; j ++) {
+                if (values[i] == values[j]) count++;
+            }
+
+            if (count == 2) {
+                highest = values[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean twoPairs() {
+        int count;
+        boolean canBeTwoPair = false;
+
+        for (int i = 0; i < values.length; i++) {
+            count = 0;
+            for (int j = 0; j < values.length; j ++) {
+                if (values[i] == values[j]) count++;
+            }
+
+            if (count == 2 && !canBeTwoPair) {
+                highest = values[i];
+                canBeTwoPair = true;
+            } else if (count == 2 && canBeTwoPair) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean threeOfKind() {
+        int count;
+
+        for (int i = 0; i < values.length; i++) {
+            count = 0;
+            for (int j = 0; j < values.length; j ++) {
+                if (values[i] == values[j]) count++;
+            }
+
+            if (count == 3) {
+                highest = values[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean fourOfKind() {
+        int count;
+
+        for (int i = 0; i < values.length; i++) {
+            count = 0;
+            for (int j = 0; j < values.length; j ++) {
+                if (values[i] == values[j]) count++;
+            }
+
+            if (count == 4) {
+                highest = values[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean consecutiveValues() {
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] - values[i - 1] != 1)
+                return false;
+        }
+        return true;
+    }
+
+    private void addCard(String c) {
+        char type = c.charAt(1);
+        int value = VALUE_ORDER.indexOf(c.charAt(0));
+
+        types.add(type);
+        values[count++] = value;
+        cards.add(new Card(value, type));
     }
 }

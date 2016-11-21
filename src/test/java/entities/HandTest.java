@@ -11,19 +11,19 @@ public class HandTest {
     }
 
     @Test
-    public void test_can_get_highest_value() {
-        Hand h1 = Hand.createHand("2H 3D 5S 9C KD");
-        Hand h2 = Hand.createHand("5H 2D AS TC JD");
-        Assert.assertEquals(h1.highestCard(), 'K');
-        Assert.assertEquals(h2.highestCard(), 'A');
+    public void can_detect_straight_flush() {
+        Hand h1 = Hand.createHand("2H 4H 3H 6H 5H");
+        Hand h2 = Hand.createHand("2H 3D 4S 5C 6D");
+        Assert.assertEquals("Straight Flush", h1.pattern());
+        Assert.assertNotEquals("Straight Flush", h2.pattern());
     }
 
     @Test
-    public void can_detect_straight_flush() {
-        Hand h1 = Hand.createHand("2H 4D 3S 6C 5D");
-        Hand h2 = Hand.createHand("2H 3D 4S 7C 6D");
-        Assert.assertTrue(h1.straightFlush());
-        Assert.assertFalse(h2.straightFlush());
+    public void can_detect_four_of_kind() {
+        Hand h1 = Hand.createHand("2H 2H 2H 2D 5H");
+        Hand h2 = Hand.createHand("2H 3D 4S 5C 6D");
+        Assert.assertEquals("Four of a Kind", h1.pattern());
+        Assert.assertNotEquals("Four of a Kind", h2.pattern());
     }
 
 }
