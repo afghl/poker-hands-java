@@ -11,6 +11,14 @@ public class Hand {
         return cards.get(0).value;
     }
 
+    public boolean straightFlush() {
+        for(int i = 1; i < cards.size(); i++) {
+            if (cards.get(i - 1).valueIdx() - cards.get(i).valueIdx() != 1)
+                return false;
+        }
+        return true;
+    }
+
     private void setCard(String c) {
         HandCard card = new HandCard();
         card.value = c.charAt(0);
@@ -25,7 +33,7 @@ public class Hand {
             h.setCard(c);
         Collections.sort(h.cards, new Comparator<HandCard>() {
             public int compare(HandCard c1, HandCard c2) {
-                return c2.valueOrder.indexOf(c2.value) - c1.valueOrder.indexOf(c1.value);
+                return c2.valueIdx() - c1.valueIdx();
             }
         });
         return h;
@@ -37,6 +45,11 @@ public class Hand {
 
         private final String typeOrder = "CDHS";
         private final String valueOrder = "23456789TJQKA";
+
+        public int valueIdx() {
+            return valueOrder.indexOf(value);
+        }
+
     }
 
 }

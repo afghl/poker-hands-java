@@ -18,5 +18,12 @@ public class HandTest {
         Assert.assertEquals(h2.highestCard(), 'A');
     }
 
+    @Test
+    public void can_detect_straight_flush() {
+        Hand h1 = Hand.createHand("2H 4D 3S 6C 5D");
+        Hand h2 = Hand.createHand("2H 3D 4S 7C 6D");
+        Assert.assertTrue(h1.straightFlush());
+        Assert.assertFalse(h2.straightFlush());
+    }
 
 }
