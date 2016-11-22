@@ -32,6 +32,10 @@ public class Hand {
         return types.size() == 1 && consecutiveValues();
     }
 
+    public boolean isStraight() {
+        return consecutiveValues();
+    }
+
     public boolean isFourOfKind() {
         SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
 
