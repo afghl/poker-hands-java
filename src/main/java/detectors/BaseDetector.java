@@ -20,4 +20,9 @@ public abstract class BaseDetector implements Detector<Hand> {
     abstract boolean condition(Hand h2);
 
     abstract Hand compare(Hand h1, Hand h2);
+
+    public Detector<Hand> setSuccessor(Detector<Hand> d) {
+        successor = d;
+        return this;
+    }
 }

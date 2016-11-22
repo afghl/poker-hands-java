@@ -32,15 +32,20 @@ public class Hand {
         return types.size() == 1 && consecutiveValues();
     }
 
+    public boolean isFourOfKind() {
+        SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
+
+        return valueSet.size() == 2 &&
+                Collections.frequency(values, valueSet.first()) == 1 ||
+                Collections.frequency(values, valueSet.first()) == 4;
+    }
+
     public String pattern() {
         SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
 
         if (isStraightFlush()) {
             return "Straight Flush";
-        } else if (valueSet.size() == 2 &&
-                Collections.frequency(values, valueSet.first()) == 1 ||
-                Collections.frequency(values, valueSet.first()) == 4
-                ) {
+        } else if (isFourOfKind()) {
             return "Four of a Kind";
         } else if (valueSet.size() == 2 &&
                 Collections.frequency(values, valueSet.first()) == 2 ||

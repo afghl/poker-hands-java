@@ -4,7 +4,6 @@ import entities.Hand;
 
 public class StraightFlushDetector extends BaseDetector implements Detector<Hand> {
 
-
     protected boolean condition(Hand h) {
         return h.isStraightFlush();
     }
