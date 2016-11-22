@@ -49,6 +49,10 @@ public class Hand {
 
     }
 
+    public boolean isFlush() {
+        return types.size() == 1;
+    }
+
     public String pattern() {
         SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
 
