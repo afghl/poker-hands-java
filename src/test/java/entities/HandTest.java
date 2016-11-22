@@ -26,4 +26,5 @@ public class HandTest {
         Assert.assertNotEquals("Four of a Kind", h2.pattern());
     }
 
+
 }

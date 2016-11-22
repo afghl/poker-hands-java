@@ -40,6 +40,15 @@ public class Hand {
                 Collections.frequency(values, valueSet.first()) == 4;
     }
 
+    public boolean isFullHouse() {
+        SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
+
+        return valueSet.size() == 2 &&
+                Collections.frequency(values, valueSet.first()) == 2 ||
+                Collections.frequency(values, valueSet.first()) == 3;
+
+    }
+
     public String pattern() {
         SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
 
@@ -47,10 +56,7 @@ public class Hand {
             return "Straight Flush";
         } else if (isFourOfKind()) {
             return "Four of a Kind";
-        } else if (valueSet.size() == 2 &&
-                Collections.frequency(values, valueSet.first()) == 2 ||
-                Collections.frequency(values, valueSet.first()) == 3
-                ) {
+        } else if (isFullHouse()) {
             return "Full House";
         } else if (types.size() == 1) {
             return "Flush";

@@ -7,6 +7,8 @@ public abstract class DetectorFactory {
 
     public static Detector<Hand> create() {
         return new StraightFlushDetector()
-                .setSuccessor(new FourOfKindDetector());
+                .setSuccessor(new FourOfKindDetector()
+                .setSuccessor(new FullHouseDetector())
+                );
     }
 }
