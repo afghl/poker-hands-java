@@ -1,6 +1,6 @@
 package entities;
 
-public class Card {
+class Card {
     private char type;
     private int value;
 
@@ -8,6 +8,4 @@ public class Card {
         value = v;
         type = t;
     }
-
-
 }

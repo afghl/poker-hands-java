@@ -24,10 +24,18 @@ public class Hand {
         return h;
     }
 
+    public List<Integer> getValues() {
+        return values;
+    }
+
+    public boolean isStraightFlush() {
+        return types.size() == 1 && consecutiveValues();
+    }
+
     public String pattern() {
         SortedSet<Integer> valueSet = new TreeSet<Integer>(values);
 
-        if (types.size() == 1 && consecutiveValues()) {
+        if (isStraightFlush()) {
             return "Straight Flush";
         } else if (valueSet.size() == 2 &&
                 Collections.frequency(values, valueSet.first()) == 1 ||
