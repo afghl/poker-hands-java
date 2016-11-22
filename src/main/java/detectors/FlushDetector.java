@@ -10,6 +10,7 @@ public class FlushDetector extends BaseDetector implements Detector<Hand> {
         return h.isFlush();
     }
 
+    // TODO: 相同的情况
     Hand compare(Hand h1, Hand h2) {
         int v1 = h1.getValues().get(0);
         int v2 = h2.getValues().get(0);
